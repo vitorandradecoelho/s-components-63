@@ -135,21 +135,168 @@ No seu arquivo CSS principal (ex: `index.css`):
 
 ## 📖 Uso
 
+### Exemplo básico (versão 0.1)
+
 ```tsx
 import React from 'react';
-import { Input, Button, Alert } from '@formify/essentials';
+import { Input, Select, Alert, Toast } from '@formify/essentials';
 
 function App() {
+  const [nome, setNome] = useState('');
+  const [opcao, setOpcao] = useState('');
+
+  const opcoes = [
+    { label: 'Opção 1', value: '1' },
+    { label: 'Opção 2', value: '2' },
+    { label: 'Opção 3', value: '3' }
+  ];
+
+  const handleSubmit = () => {
+    Toast.success('Formulário enviado com sucesso!');
+  };
+
   return (
-    <div>
+    <div className="space-y-4 p-6">
       <Input 
         label="Nome"
         placeholder="Digite seu nome"
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+      />
+      
+      <Select
+        label="Escolha uma opção"
+        options={opcoes}
+        value={opcao}
+        onValueChange={setOpcao}
+        placeholder="Selecione..."
       />
       
       <Alert variant="success">
         Componente funcionando perfeitamente!
       </Alert>
+
+      <button onClick={handleSubmit}>
+        Enviar
+      </button>
+    </div>
+  );
+}
+```
+
+### Exemplo com DataTable
+
+```tsx
+import React from 'react';
+import { DataTable, type TableColumn } from '@formify/essentials';
+
+interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+  status: 'ativo' | 'inativo';
+}
+
+function UsuariosPage() {
+  const usuarios: Usuario[] = [
+    { id: 1, nome: 'João Silva', email: 'joao@email.com', status: 'ativo' },
+    { id: 2, nome: 'Maria Santos', email: 'maria@email.com', status: 'ativo' },
+    { id: 3, nome: 'Pedro Costa', email: 'pedro@email.com', status: 'inativo' }
+  ];
+
+  const colunas: TableColumn<Usuario>[] = [
+    {
+      key: 'id',
+      title: 'ID',
+      sortable: true,
+      width: '80px'
+    },
+    {
+      key: 'nome',
+      title: 'Nome',
+      sortable: true
+    },
+    {
+      key: 'email',
+      title: 'E-mail',
+      sortable: true
+    },
+    {
+      key: 'status',
+      title: 'Status',
+      render: (status) => (
+        <span className={`px-2 py-1 rounded text-xs ${
+          status === 'ativo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+        }`}>
+          {status}
+        </span>
+      )
+    }
+  ];
+
+  return (
+    <DataTable
+      data={usuarios}
+      columns={colunas}
+      pagination={{
+        pageSize: 5,
+        showTotal: true,
+        showSizeChanger: true
+      }}
+    />
+  );
+}
+```
+
+### Exemplo com ComboBox e LinhaTrajetoSelector
+
+```tsx
+import React, { useState } from 'react';
+import { ComboBox, LinhaTrajetoSelector, type Linha, type Trajeto } from '@formify/essentials';
+
+function TransporteForm() {
+  const [linhas] = useState<Linha[]>([
+    {
+      _id: '1',
+      clienteId: 1,
+      id_migracao: 1,
+      descr: 'Linha Centro-Periferia',
+      numero: '001',
+      trajetos: [
+        {
+          _id: 't1',
+          nome: 'Centro → Periferia',
+          sentido: 'Ida',
+          kmTrajeto: 15.5,
+          // ... outros campos
+        },
+        {
+          _id: 't2', 
+          nome: 'Periferia → Centro',
+          sentido: 'Volta',
+          kmTrajeto: 15.5,
+          // ... outros campos
+        }
+      ],
+      id: '1'
+    }
+  ]);
+
+  const [linhaSelecionada, setLinhaSelecionada] = useState<string>('');
+  const [trajetosSelecionados, setTrajetosSelecionados] = useState<string[]>([]);
+
+  return (
+    <div className="space-y-4">
+      <LinhaTrajetoSelector
+        linhas={linhas}
+        selectedLinhaId={linhaSelecionada}
+        selectedTrajetoIds={trajetosSelecionados}
+        onLinhaChange={(linha) => setLinhaSelecionada(linha?._id || '')}
+        onTrajetoChange={(trajetos) => setTrajetosSelecionados(trajetos.map(t => t._id))}
+        linhaLabel="Linha de Transporte"
+        trajetoLabel="Trajetos"
+        multiSelectTrajeto={true}
+      />
     </div>
   );
 }

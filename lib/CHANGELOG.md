@@ -16,11 +16,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Corrigido
 - Correções de bugs menores
 
-## [1.0.0] - 2024-01-15
+## [0.1.0] - 2025-01-15
 
-### Adicionado
+### Adicionado  
 - ✨ Versão inicial da biblioteca @formify/essentials
-- 🎯 13 componentes fundamentais:
+- 🎯 14 componentes fundamentais:
   - Input - Campo de entrada com validação
   - Select - Seletor dropdown
   - TextField - Área de texto expandida
@@ -34,6 +34,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Alert - Componente de alertas
   - Toast - Notificações temporárias
   - SweetAlert - Alertas interativos
+  - LinhaTrajetoSelector - Seletor de linhas e trajetos de transporte
 
 - 🎨 Design system completo com:
   - Tokens CSS customizáveis

@@ -1,6 +1,6 @@
 {
   "name": "@formify/essentials",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Uma biblioteca de componentes React reutilizáveis com design system integrado",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
